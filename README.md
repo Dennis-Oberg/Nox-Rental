@@ -4,4 +4,5 @@ sdk coretto-17
 
 run all tests in com.dennis.noxrental
 
-db is automatically filled with cars on startup. 
+entities are created automatically and db populated with cars on startup. 
+
