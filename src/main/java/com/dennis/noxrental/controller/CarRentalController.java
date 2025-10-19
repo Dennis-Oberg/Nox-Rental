@@ -48,6 +48,7 @@ public class CarRentalController {
         }
 
         if (!carRentalService.isValidDatesRange(request.getPickUpDate(), request.getReturnDate())) {
+            log.info("Requested dates not allowed.");
             return ResponseEntity.badRequest().body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.INVALID_DATE_RANGE));
         }
 

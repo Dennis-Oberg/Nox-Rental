@@ -21,7 +21,7 @@ public class CarController {
         this.carService = carService;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list") //showing the db entity directly to the user, rework to a dto later on as entity grows
     public ResponseEntity<Map<String, List<Car>>> listCars() {
         return ResponseEntity.ok().body(Map.of(AppConstants.API_DATA_RESPONSE_KEY, carService.listCars()));
     }
