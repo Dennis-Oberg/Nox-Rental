@@ -33,7 +33,7 @@ public class CarControllerUnitTests {
     private MockMvc mockMvc;
 
     @Test
-    void shouldGiveBackListOffourItems() throws Exception {
+    void shouldGiveBackListOffOurItems() throws Exception {
         when(carService.listCars()).thenReturn(TestHelper.GenerateCarListTestData());
         this.mockMvc.perform(get(LIST_ALL_CARS_URL)).andDo(print())
                 .andExpect(status().isOk())

@@ -1,15 +1,23 @@
 import React from "react";
 import {useGetAllRentalsData} from "../hooks/apiHooks";
 import Loading from "../components/Loading";
+import Error from "../components/Error";
 
 const AdminPage = () => {
-    const {data, isLoading} = useGetAllRentalsData()
+    const {data, isLoading, isError} = useGetAllRentalsData()
 
-    if (isLoading) {
+    if (isError) {
         return(
-            <Loading loadingText={"Loading rentals information"} />
+            <Error errorText={"Failed to fetch data"} />
         )
     }
+
+    if (isLoading) {
+        return (
+            <Loading loadingText={"Loading rentals information"}/>
+        )
+    }
+
 
     return (
         <div className={"parent"}>
@@ -26,7 +34,7 @@ const AdminPage = () => {
                 </thead>
                 <tbody>
                 {data &&
-                    data.rentals .map((rental, index) => (
+                    data.rentals.map((rental, index) => (
                         <tr key={index}>
                             <td>{rental.driverName}</td>
                             <td>{rental.car?.carName}</td>
@@ -34,7 +42,6 @@ const AdminPage = () => {
                                 {new Date(rental.pickUpDate).toLocaleDateString()}
                             </td>
                             <td>
-
                                 {new Date(rental.returnDate).toLocaleDateString()}
                             </td>
                             <td>{rental.totalRentalCost}</td>
@@ -44,8 +51,7 @@ const AdminPage = () => {
             </table>
             <div className={"rentalsDiv"}>
                 <span>
-
-                <b> Total revenue: {data && data.totalRevenue}</b>
+                     <b> Total revenue: {data && data.totalRevenue}</b>
                 </span>
             </div>
         </div>

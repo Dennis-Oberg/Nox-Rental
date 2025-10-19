@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {RentalRequest, useGetCarsData, usePutRentalMutation} from "../hooks/apiHooks";
+import { useGetCarsData, usePutRentalMutation} from "../hooks/apiHooks";
+import {RentalRequest} from "../types/types";
 import Loading from "../components/Loading";
 import {SubmitHandler, useForm} from "react-hook-form"
 import {useRentalPrice} from "../hooks/internalHooks";
@@ -8,7 +9,7 @@ import Error from "../components/Error";
 
 const RentalPage = () => {
 
-    const {isLoading, data: getCarsData, isError: carsDataError} = useGetCarsData()
+    const {isLoading, data: getCarsData, isError: carsDataError} = useGetCarsData();
     const {mutateAsync: rentalMutation, isPending: rentalMutationPending} = usePutRentalMutation();
     const [response, setServerResponse] = useState<string | undefined>(undefined);
 
@@ -18,10 +19,10 @@ const RentalPage = () => {
         reset,
         watch,
         formState: {errors},
-    } = useForm<RentalRequest>()
+    } = useForm<RentalRequest>();
 
     //hook that provide our "totals-cost"
-    const totalRentalPrice = useRentalPrice({watch, carsData: getCarsData})
+    const totalRentalPrice = useRentalPrice({watch, carsData: getCarsData});
 
 
     const onSubmit: SubmitHandler<RentalRequest> = async (data) => {
@@ -42,16 +43,16 @@ const RentalPage = () => {
             setServerResponse(res.message);
             return
         }
-        setServerResponse(res.message)
-        reset()
+        setServerResponse(res.message);
+        reset();
     }
     if (isLoading) {
         return <Loading loadingText={"Fetching rentals"}/>
     }
     if (carsDataError) {
-        return <Error errorText={"Failed to fetch cars."} />
+        return <Error errorText={"Failed to fetch cars."}/>
     }
-    //Should create a component for the input
+
     return (
         <div className={"parent"}>
             <h2>Rent a car!</h2>
@@ -79,22 +80,19 @@ const RentalPage = () => {
                     <div className={"inputContainer"}>
                         <label htmlFor="">Select when you wish to return the car.</label>
                         <input type={"date"}  {...register('returnDate', {required: true})} />
-                        {errors.returnDate &&  <TextFeedbackError text={"Select a date to return the car."}/>}
+                        {errors.returnDate && <TextFeedbackError text={"Select a date to return the car."}/>}
                     </div>
 
                     <div className={"inputContainer"}>
                         <label htmlFor="">What is your name?</label>
                         <input type={"text"}
                                placeholder={"Provide your name!"} {...register('driverName', {required: true})} />
-                        {errors.driverName &&  <TextFeedbackError text={"Please provide your name."}/>}
+                        {errors.driverName && <TextFeedbackError text={"Please provide your name."}/>}
                     </div>
-                    {/*
-
-                    */}
                     <div className={"inputContainer"}>
                         <label htmlFor="">What is your age?</label>
                         <input type={"text"}  {...register('driverAge', {required: true})} />
-                        {errors.driverAge &&  <TextFeedbackError text={"Please provide your age."}/>}
+                        {errors.driverAge && <TextFeedbackError text={"Please provide your age."}/>}
                     </div>
                     {totalRentalPrice && <span>Price {totalRentalPrice}SEK</span>}
                     <div className={"inputContainer"}>

@@ -1,7 +1,6 @@
 package com.dennis.noxrental.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "cars")

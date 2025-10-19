@@ -5,7 +5,6 @@ import com.dennis.noxrental.entity.Car;
 import java.util.List;
 
 public interface CarService {
-    void insertCar(String carName, double pricePerDay);
 
     List<Car> listCars();
 

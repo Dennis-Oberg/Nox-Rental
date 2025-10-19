@@ -3,7 +3,6 @@ package com.dennis.noxrental.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -62,6 +61,7 @@ public class Rental {
     public double getTotalRentalCost() {
         return totalRentalCost;
     }
+
     public void setTotalRentalCost(double totalRentalCost) {
         this.totalRentalCost = totalRentalCost;
     }

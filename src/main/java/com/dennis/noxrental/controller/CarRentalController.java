@@ -35,38 +35,38 @@ public class CarRentalController {
     }
 
     @PutMapping(value = "/rent")
-    public ResponseEntity<Map<String, Object>> rent(@RequestBody RentalRequestDTO r) {
+    public ResponseEntity<Map<String, Object>> rent(@RequestBody RentalRequestDTO request) {
 
-        if (!carRentalService.isDriverOfAge(r.getDriverAge())) {
+        if (!carRentalService.isDriverOfAge(request.getDriverAge())) {
             log.info("Driver is not old enough.");
             return ResponseEntity.badRequest().body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.DRIVER_TOO_YOUNG));
         }
 
-        if (!carRentalService.isValidDriverName(r.getDriverName())) {
+        if (!carRentalService.isValidDriverName(request.getDriverName())) {
             log.info("Bad driver name.");
             return ResponseEntity.badRequest().body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.BAD_DRIVER_NAME_INPUT));
         }
 
-        if (!carRentalService.isValidDatesRange(r.getPickUpDate(), r.getReturnDate())) {
-
+        if (!carRentalService.isValidDatesRange(request.getPickUpDate(), request.getReturnDate())) {
             return ResponseEntity.badRequest().body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.INVALID_DATE_RANGE));
         }
 
+        //move to some global error interceptor
         Car requestedCar;
         try {
-            requestedCar = carService.getCarById(r.getCarId());
+            requestedCar = carService.getCarById(request.getCarId());
         } catch (EntityNotFoundException e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.CAR_NOT_FOUND));
-
         }
+
         //asserts if available between these dates.
-        boolean isCarAvailable = carRentalService.isCarAvailableForRental(r.getPickUpDate(), r.getReturnDate(), requestedCar.getId());
+        boolean isCarAvailable = carRentalService.isCarAvailableForRental(request.getPickUpDate(), request.getReturnDate(), requestedCar.getId());
         if (!isCarAvailable) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.CAR_NOT_AVAILABLE));
         }
 
-        Rental rental = carRentalService.createRentalInstance(r, requestedCar);
+        Rental rental = carRentalService.createRentalInstance(request, requestedCar);
         carRentalService.upsertCarRental(rental);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(AppConstants.API_DATA_RESPONSE_KEY, "Rental created!"));
     }

@@ -31,7 +31,7 @@ public class AdminControllerUnitTests {
     private MockMvc mockMvc;
 
     @Test
-    public void assertGettingCorrectLength() throws Exception {
+    public void assertGettingCorrecJSONtLength() throws Exception {
         when(adminService.getAdminRentalSummary()).thenReturn(TestHelper.GenerateRentalListTestData());
 
         this.mockMvc.perform(get(GET_ALL_RENTALS_ADMIN_URL)).andDo(print())
@@ -71,7 +71,7 @@ public class AdminControllerUnitTests {
                 .andExpect(jsonPath("$.data.rentals[1].totalRentalCost", is(500.0)))
                 .andExpect(jsonPath("$.data.rentals[1].driverName", is("Dempa")))
 
-                .andExpect(jsonPath("$.data.totalRevenue", is(550.0))); //not correct, just put something there for the json parsing itself
+                .andExpect(jsonPath("$.data.totalRevenue", is(550.0))); //not correct and not what im testing so it doesnt matter. just put something there for the json parsing itself
     }
 
 }

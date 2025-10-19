@@ -1,6 +1,7 @@
 import {renderHook} from "@testing-library/react";
-import {CarInfo, RentalRequest} from "../hooks/apiHooks";
+
 import {useRentalPrice} from "../hooks/internalHooks";
+import {CarInfo, RentalRequest} from "../types/types";
 
 const expectedResult: CarInfo[] = [
     {id: 1, carName: "Volvo S60", pricePerDay: 1500},
@@ -9,25 +10,7 @@ const expectedResult: CarInfo[] = [
     {id: 4, carName: "Ford Transit", pricePerDay: 2400},
 ];
 
-const mockFetch = jest.spyOn(global, "fetch").mockImplementation(() =>
-    Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(expectedResult),
-    } as Response)
-);
 
-beforeEach(() => {
-    global.fetch = jest.fn(() =>
-        Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve(expectedResult),
-        } as Response)
-    ) as jest.Mock;
-});
-
-afterEach(() => {
-    mockFetch.mockRestore()
-});
 
 
 describe('testing rental price hook', () => {

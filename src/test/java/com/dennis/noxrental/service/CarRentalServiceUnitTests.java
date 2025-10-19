@@ -103,7 +103,6 @@ public class CarRentalServiceUnitTests {
         assertEquals(ErrorConstants.MUST_BE_ABOVE_ZERO_DAYS_RENTED, expected.getMessage());
     }
 
-
     @Test
     public void assertTrueIfDateAfterToday() {
         LocalDate pickUpDate = TestHelper.GenerateDate(10, 22);
