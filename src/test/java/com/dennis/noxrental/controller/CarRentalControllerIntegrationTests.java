@@ -3,7 +3,6 @@ package com.dennis.noxrental.controller;
 import com.dennis.noxrental.repository.CarRentalRepository;
 import com.dennis.noxrental.repository.CarRepository;
 import com.dennis.noxrental.service.CarRentalService;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;

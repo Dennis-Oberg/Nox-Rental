@@ -38,21 +38,21 @@ public class CarControllerUnitTests {
         this.mockMvc.perform(get(LIST_ALL_CARS_URL)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(4)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].carName", is("Volvo S60")))
-                .andExpect(jsonPath("$[0].pricePerDay", is(1500)))
+                .andExpect(jsonPath("$.data", hasSize(4)))
+                .andExpect(jsonPath("$.data[0].id", is(1)))
+                .andExpect(jsonPath("$.data[0].carName", is("Volvo S60")))
+                .andExpect(jsonPath("$.data[0].pricePerDay", is(1500.0)))
 
-                .andExpect(jsonPath("$[1].id", is(2)))
-                .andExpect(jsonPath("$[1].carName", is("Volkswagen Golf")))
-                .andExpect(jsonPath("$[1].pricePerDay", is(1333)))
+                .andExpect(jsonPath("$.data[1].id", is(2)))
+                .andExpect(jsonPath("$.data[1].carName", is("Volkswagen Golf")))
+                .andExpect(jsonPath("$.data[1].pricePerDay", is(1333.0)))
 
-                .andExpect(jsonPath("$[2].id", is(3)))
-                .andExpect(jsonPath("$[2].carName", is("Ford Mustang")))
-                .andExpect(jsonPath("$[2].pricePerDay", is(3000)))
+                .andExpect(jsonPath("$.data[2].id", is(3)))
+                .andExpect(jsonPath("$.data[2].carName", is("Ford Mustang")))
+                .andExpect(jsonPath("$.data[2].pricePerDay", is(3000.0)))
 
-                .andExpect(jsonPath("$[3].id", is(4)))
-                .andExpect(jsonPath("$[3].carName", is("Ford Transit")))
-                .andExpect(jsonPath("$[3].pricePerDay", is(2400)));
+                .andExpect(jsonPath("$.data[3].id", is(4)))
+                .andExpect(jsonPath("$.data[3].carName", is("Ford Transit")))
+                .andExpect(jsonPath("$.data[3].pricePerDay", is(2400.0)));
     }
 }

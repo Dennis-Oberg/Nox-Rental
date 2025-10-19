@@ -6,35 +6,35 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Configuration
 public class DatabaseSeeder {
+
+    //should use service? think its fine for this case to call the repo directly.
     @Bean
     CommandLineRunner seed(CarRepository carRepository) {
         return args -> {
             if (carRepository.count() == 0) {
                 Car volvo = new Car();
                 volvo.setCarName("Volvo S60");
-                volvo.setPricePerDay(new BigDecimal("1500"));
+                volvo.setPricePerDay(1500D);
 
                 Car vw = new Car();
                 vw.setCarName("Volkswagen Golf");
-                vw.setPricePerDay(new BigDecimal( "1333"));
+                vw.setPricePerDay(1333D);
 
                 Car mustang = new Car();
                 mustang.setCarName("Ford Mustang");
-                mustang.setPricePerDay(new BigDecimal( "3000"));
+                mustang.setPricePerDay(3000D);
 
                 Car transit = new Car();
                 transit.setCarName("Ford Transit");
-                transit.setPricePerDay(new BigDecimal( "2400"));
+                transit.setPricePerDay(2400D);
 
                 List<Car> cars = List.of(volvo, vw, mustang, transit);
                 cars.forEach(car -> carRepository.insertCar(car.getCarName(), car.getPricePerDay()));
             }
         };
     }
-
 }

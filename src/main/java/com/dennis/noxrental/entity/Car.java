@@ -12,8 +12,7 @@ public class Car {
     private long id;
 
     private String carName;
-    private BigDecimal pricePerDay;
-
+    private double pricePerDay;
 
     public long getId() {
         return id;
@@ -23,11 +22,11 @@ public class Car {
         this.id = id;
     }
 
-    public BigDecimal getPricePerDay() {
+    public double getPricePerDay() {
         return pricePerDay;
     }
 
-    public void setPricePerDay(BigDecimal pricePerDay) {
+    public void setPricePerDay(double pricePerDay) {
         this.pricePerDay = pricePerDay;
     }
 

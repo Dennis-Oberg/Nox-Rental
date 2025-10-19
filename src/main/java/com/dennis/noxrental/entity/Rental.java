@@ -1,5 +1,7 @@
 package com.dennis.noxrental.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,14 +14,16 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate pickUpDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate returnDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "carId")
     private Car car;
 
-    private BigDecimal totalRentalCost;
+    private double totalRentalCost;
 
     private String driverName;
 
@@ -55,11 +59,10 @@ public class Rental {
         this.car = car;
     }
 
-    public BigDecimal getTotalRentalCost() {
+    public double getTotalRentalCost() {
         return totalRentalCost;
     }
-
-    public void setTotalRentalCost(BigDecimal totalRentalCost) {
+    public void setTotalRentalCost(double totalRentalCost) {
         this.totalRentalCost = totalRentalCost;
     }
 

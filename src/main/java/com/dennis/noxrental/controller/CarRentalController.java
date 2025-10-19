@@ -1,6 +1,8 @@
 package com.dennis.noxrental.controller;
 
-import com.dennis.noxrental.DTO.RentalDTO;
+import com.dennis.noxrental.entity.DTO.RentalRequestDTO;
+import com.dennis.noxrental.constant.AppConstants;
+import com.dennis.noxrental.constant.ErrorConstants;
 import com.dennis.noxrental.entity.Car;
 import com.dennis.noxrental.entity.Rental;
 import com.dennis.noxrental.service.CarRentalService;
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import javax.persistence.EntityNotFoundException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/rental")
@@ -32,25 +34,40 @@ public class CarRentalController {
         this.carService = carService;
     }
 
-
     @PutMapping(value = "/rent")
-    public ResponseEntity<String> rent() {
+    public ResponseEntity<Map<String, Object>> rent(@RequestBody RentalRequestDTO r) {
 
+        if (!carRentalService.isDriverOfAge(r.getDriverAge())) {
+            log.info("Driver is not old enough.");
+            return ResponseEntity.badRequest().body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.DRIVER_TOO_YOUNG));
+        }
 
+        if (!carRentalService.isValidDriverName(r.getDriverName())) {
+            log.info("Bad driver name.");
+            return ResponseEntity.badRequest().body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.BAD_DRIVER_NAME_INPUT));
+        }
 
-        Car car = new Car();
-        car.setId(1L);
-        car.setPricePerDay(new BigDecimal("1000"));
+        if (!carRentalService.isValidDatesRange(r.getPickUpDate(), r.getReturnDate())) {
 
-        Rental rental = new Rental();
-        rental.setCar(car);
-        rental.setPickUpDate(LocalDate.of(2025, 10,10));
-        rental.setReturnDate(LocalDate.of(2025, 10,12));
-        rental.setTotalRentalCost(carRentalService.calculateTotalRentalCost(car.getPricePerDay(), 2));
-        rental.setDriverName("Dennis");
+            return ResponseEntity.badRequest().body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.INVALID_DATE_RANGE));
+        }
 
+        Car requestedCar;
+        try {
+            requestedCar = carService.getCarById(r.getCarId());
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.CAR_NOT_FOUND));
+
+        }
+        //asserts if available between these dates.
+        boolean isCarAvailable = carRentalService.isCarAvailableForRental(r.getPickUpDate(), r.getReturnDate(), requestedCar.getId());
+        if (!isCarAvailable) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(AppConstants.API_ERROR_RESPONSE_KEY, ErrorConstants.CAR_NOT_AVAILABLE));
+        }
+
+        Rental rental = carRentalService.createRentalInstance(r, requestedCar);
         carRentalService.upsertCarRental(rental);
-        return new ResponseEntity<>("Rental created!", HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(AppConstants.API_DATA_RESPONSE_KEY, "Rental created!"));
     }
-
 }

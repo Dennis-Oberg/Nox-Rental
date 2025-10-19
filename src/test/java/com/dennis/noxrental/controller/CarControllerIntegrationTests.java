@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static com.dennis.noxrental.TestHelper.LIST_ALL_CARS_URL;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,16 +23,17 @@ public class CarControllerIntegrationTests {
     private MockMvc mockMvc;
 
     @Test
-    void shouldReturnOK() throws Exception {
+    public void shouldListAllCars() throws Exception {
         mockMvc.perform(get(LIST_ALL_CARS_URL))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
     @Test
-    void shouldListAllCars() throws Exception {
-        mockMvc.perform(get(LIST_ALL_CARS_URL))
+    public void shouldReturnBadRequestOnWrongHttpMethod() throws Exception {
+        mockMvc.perform(post(LIST_ALL_CARS_URL))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isMethodNotAllowed());
     }
 
 }

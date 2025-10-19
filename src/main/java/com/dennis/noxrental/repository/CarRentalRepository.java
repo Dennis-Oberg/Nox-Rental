@@ -23,7 +23,7 @@ public interface CarRentalRepository extends JpaRepository<Rental, Long> {
             @Param("driverName") String driverName,
             @Param("pickupDate") LocalDate pickupDate,
             @Param("returnDate") LocalDate returnDate,
-            @Param("totalCost") BigDecimal totalCost,
+            @Param("totalCost") double totalCost,
             @Param("carId") Long carId
     );
 
@@ -39,7 +39,7 @@ public interface CarRentalRepository extends JpaRepository<Rental, Long> {
             """, nativeQuery = true)
     boolean isCarAvailable(@Param("pickUpDate") LocalDate pickUpDate, @Param("returnDate") LocalDate returnDate, @Param("carId") long carId);
 
-    @Query(value = "SELECT id, FROM rentals", nativeQuery = true)
+    @Query(value = "SELECT id,driver_name, pick_up_date, return_date, total_rental_cost, car_id FROM rentals", nativeQuery = true)
     List<Rental> getAll();
 
 }

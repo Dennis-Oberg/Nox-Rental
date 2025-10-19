@@ -5,10 +5,10 @@ const Navigationbar = () => {
         <div className={"navigationcontainer"}>
             <ul>
                 <li>
-                    <a href="">Rent a car</a>
+                    <a href="/rent">Rent a car</a>
                 </li>
                 <li>
-                    <a href="">Admin</a>
+                    <a href="/admin">Admin</a>
                 </li>
             </ul>
 
