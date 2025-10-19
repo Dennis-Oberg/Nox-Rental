@@ -26,7 +26,6 @@ public class CarRentalServiceImpl implements CarRentalService {
         this.clock = clock;
     }
 
-    @Override
     public boolean isDriverOfAge(int age) {
         return age >= AppConstants.MIN_AGE;
     }
@@ -79,7 +78,6 @@ public class CarRentalServiceImpl implements CarRentalService {
 
     //not sure about this implementation,
     //can the drivername be d3nnis? bengt2? not sure. :)
-    @Override
     public boolean isValidDriverName(String driverName) {
         if (driverName == null) {
             log.error(ErrorConstants.DRIVER_NAME_IS_NULL);
@@ -92,7 +90,6 @@ public class CarRentalServiceImpl implements CarRentalService {
         return !driverName.matches(".*\\d.*");
     }
 
-    @Override
     public boolean isValidDatesRange(LocalDate pickUpDate, LocalDate returnDate) {
         if (pickUpDate == null) {
             log.error("pick up date is null for range check.");

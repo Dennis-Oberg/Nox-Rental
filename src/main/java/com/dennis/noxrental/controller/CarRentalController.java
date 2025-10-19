@@ -1,9 +1,9 @@
 package com.dennis.noxrental.controller;
 
-import com.dennis.noxrental.entity.DTO.RentalRequestDTO;
 import com.dennis.noxrental.constant.AppConstants;
 import com.dennis.noxrental.constant.ErrorConstants;
 import com.dennis.noxrental.entity.Car;
+import com.dennis.noxrental.entity.DTO.RentalRequestDTO;
 import com.dennis.noxrental.entity.Rental;
 import com.dennis.noxrental.service.CarRentalService;
 import com.dennis.noxrental.service.CarService;
